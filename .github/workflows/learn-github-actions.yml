@@ -5,6 +5,11 @@ jobs:
   precheck:
     if: github.repository == 'milljm/action_testing'
     runs-on: self-hosted
+    env:
+      MOOSE_JOBS: 6
     steps:
       - uses: actions/checkout@v4
       - run: scripts/diagnostics.sh
+      - run:
+          shell: make -j $MOOSE_JOBS
+          working-directory: ./test -j $MOOSE_JOBS
