@@ -1,0 +1,38 @@
+[Tests]
+  [coupling_demonstration]
+    issues = '#18846'
+    design = '/ComputeMultipleCrystalPlasticityStress.md /CrystalPlasticityHCPDislocationSlipBeyerleinUpdate.md /CrystalPlasticityTwinningKalidindiUpdate.md'
+    requirement = 'The crystal plasticity HCP system shall: '
+    [modified_kalidindi_for_hcp]
+      type = CSVDiff
+      input = 'modified_kalidindi_for_hcp.i'
+      csvdiff = 'modified_kalidindi_for_hcp_out.csv'
+      detail = 'calculate the Schmid tensor for a set of HCP twin systems given '
+               'in Miller-Bravais indices and shall calculate a twin volume '
+               'fraction when using the FCC Kalidindi twinning model with a '
+               'modified input file.'
+    []
+    [demonstration_combined_hcp_slip_twins]
+      type = CSVDiff
+      input = 'demonstration_combined_hcp_slip_twins.i'
+      csvdiff = 'demonstration_combined_hcp_slip_twins_out.csv'
+      cli_args = 'Outputs/out/type=Checkpoint Outputs/out/execute_on=Final'
+      detail = 'compute a plastic velocity gradient that accounts for deformation '
+               'contributions from both slip and twinning in an HCP crystal.'
+    []
+  []
+  [demonstration_combined_hcp_slip_twins_restart]
+    type = CSVDiff
+    input = 'demonstration_combined_hcp_slip_twins.i'
+    csvdiff = 'demonstration_combined_hcp_slip_twins_restart_out.csv'
+    cli_args = 'Problem/restart_file_base=demonstration_combined_hcp_slip_twins_out_cp/LATEST '
+               'Outputs/file_base=demonstration_combined_hcp_slip_twins_restart_out '
+               'Executioner/end_time=2.5 '
+               'Executioner/dt=0.125'
+    requirement = 'The crystal plasticity system shall compute the plastic velocity gradient  '
+                  'from both slip and twinning in anHCP crystal upon simulation restart.'
+    issues = '#26458'
+    design = '/ComputeMultipleCrystalPlasticityStress.md /CrystalPlasticityHCPDislocationSlipBeyerleinUpdate.md /CrystalPlasticityTwinningKalidindiUpdate.md'
+    prereq = 'coupling_demonstration/demonstration_combined_hcp_slip_twins'
+  []
+[]

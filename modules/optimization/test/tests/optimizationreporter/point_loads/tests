@@ -1,0 +1,95 @@
+[Tests]
+  issues = '#21885 #24101 #25689 #26262'
+  design = 'ReporterPointSource.md OptimizationReporter/index.md'
+  [point_loads]
+    requirement = "The system shall be able to invert for point loads using"
+    [hessian]
+      # DO NOT CHANGE THIS TEST
+      # this test is documented as an example in forceInv_pointLoads.md
+      # if this test is changed, the figures will need to be updated.
+      type = CSVDiff
+      input = main.i
+      csvdiff = main_out_OptimizationReporter_0001.csv
+      max_threads = 1 # Optimize executioner does not support multiple threads
+      rel_err = 0.1
+      abs_zero = 10
+      # steady solve
+      recover = false
+      detail = 'Hessian-based optimization,'
+    []
+    [hessian_reg]
+      type = CSVDiff
+      input = "main.i regularization_for_main.i"
+      csvdiff = main_out_reg_OptimizationReporter_0001.csv
+      max_threads = 1 # Optimize executioner does not support multiple threads
+      rel_err = 0.1
+      abs_zero = 10
+      # steady solve
+      recover = false
+      detail = 'ill-posed Hessian-based optimization with Tikhonov regularization,'
+    []
+    [adjoint]
+      type = CSVDiff
+      input = main.i
+      cli_args = "Executioner/tao_solver=taolmvm Executioner/petsc_options_iname='-tao_gttol' "
+                 "Executioner/petsc_options_value='1e-5'"
+      csvdiff = main_out_OptimizationReporter_0001.csv
+      max_threads = 1 # Optimize executioner does not support multiple threads
+      rel_err = 0.1
+      abs_zero = 10
+      # steady solve
+      recover = false
+      detail = 'gradient-based optimization, '
+    []
+    [adjoint_reg]
+      type = CSVDiff
+      input = "main.i regularization_for_main.i"
+      cli_args = "Executioner/tao_solver=taolmvm Executioner/petsc_options_iname='-tao_gttol' "
+                 "Executioner/petsc_options_value='1e-5'"
+      csvdiff = main_out_reg_OptimizationReporter_0001.csv
+      max_threads = 1 # Optimize executioner does not support multiple threads
+      rel_err = 0.1
+      abs_zero = 10
+      # steady solve
+      recover = false
+      detail = 'ill-posed gradient-based optimization with Tikhonov regularization, '
+    []
+    [auto_adjoint]
+      type = CSVDiff
+      input = main_auto_adjoint.i
+      absent_out = 'type: ilu'
+      cli_args = 'Outputs/file_base=main_out -ksp_view'
+      csvdiff = main_out_OptimizationReporter_0001.csv
+      max_threads = 1 # Optimize executioner does not support multiple threads
+      rel_err = 0.1
+      abs_zero = 10
+      # steady solve
+      recover = false
+      detail = 'gradient-based optimization with an automatically computed adjoint that uses the same preconditioner as the forward solve, or '
+    []
+    [auto_adjoint_reg]
+      type = CSVDiff
+      cli_args = "OptimizationReporter/initial_condition='1000 1000 1000'"
+      input = 'main_auto_adjoint.i regularization_for_main.i'
+      csvdiff = main_out_reg_OptimizationReporter_0001.csv
+      max_threads = 1 # Optimize executioner does not support multiple threads
+      rel_err = 0.1
+      abs_zero = 10
+      # steady solve
+      recover = false
+      detail = 'gradient-based optimization with an automatically computed adjoint, with Tikhonov regularization, and initial conditions do not affect the converged regularized solution, or'
+    []
+    [finite_diff_view]
+      type = RunApp
+      input = main_auto_adjoint.i
+      expect_out = 'Hand-coded minus finite-difference gradient'
+      cli_args = " Executioner/petsc_options_iname='-tao_max_it -tao_fd_test -tao_test_gradient -tao_ls_type'"
+                 " Executioner/petsc_options_value='1 true true unit'"
+                 " Executioner/petsc_options='-tao_test_gradient_view'"
+      max_threads = 1 # Optimize executioner does not support multiple threads
+      # steady solve
+      recover = false
+      detail = 'print finite difference gradient information to the screen when using the automatically formed adjoint.'
+    []
+  []
+[]

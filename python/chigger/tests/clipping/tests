@@ -1,0 +1,59 @@
+[Tests]
+  issues = '#8661'
+  design = 'chigger/index.md'
+  [plane]
+    type = ImageDiff
+    command = clip.py
+    imagediff = 'clip.png'
+    display_required = true
+    requirement = "The system shall be able to clip the display of simulation results with the default plane (normal to X axis)."
+  []
+
+  [plane_elem_var]
+    type = ImageDiff
+    command = clip_elem.py
+    imagediff = 'clip_elem.png'
+    display_required = true
+    requirement = "The system shall be able to clip the display of an auxiliary variable in the simulation results with the default plane (normal to X axis)."
+  []
+
+  [clip_z]
+    type = ImageDiff
+    command = clip_z.py
+    imagediff = 'clip_z.png'
+    display_required = true
+    requirement = "The system shall be able to clip the display of simulation results with a plane normal to the Z-axis."
+  []
+
+  [dual]
+    type = ImageDiff
+    command = dual.py
+    imagediff = dual.png
+    display_required = true
+    requirement = "The system shall be able to clip the display of simulation results with two different planes."
+  []
+
+  [box]
+    type = ImageDiff
+    command = box_clip.py
+    imagediff = 'box_clip.png'
+    display_required = true
+    requirement = "The system shall be able to clip the display of simulation results with planes forming a box."
+  []
+
+  [dynamic]
+    type = ImageDiff
+    command = clip_change.py
+    imagediff = 'clip_change0.png clip_change1.png clip_change2.png'
+    display_required = true
+    requirement = "The system shall be able to clip the display of simulation results by moving a clipping plane on every time step."
+  []
+
+  [multiple]
+    type = ImageDiff
+    command = multiple_clips.py
+    imagediff = 'multiple_clips.png'
+    display_required = true
+    requirement = "The system shall be able to display multiple simulations results clipped by different planes."
+  []
+[]

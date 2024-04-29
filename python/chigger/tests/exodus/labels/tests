@@ -1,0 +1,29 @@
+[Tests]
+  issues = '#7451'
+  design = 'python/chigger/index.md'
+  [points]
+    type = ImageDiff
+    command = points.py
+    imagediff = 'points.png'
+    allowed = 0.96
+    display_required = true
+    requirement = 'The system shall include a graphical scripting language that can place numbered labels on results at given points.'
+  []
+
+  [cells]
+    type = ImageDiff
+    command = cells.py
+    imagediff = 'cells.png'
+    allowed = 0.96
+    display_required = true
+    requirement = 'The system shall include a graphical scripting language that can place numbered labels on results inside cells.'
+  []
+
+  [variable]
+    type = ImageDiff
+    command = variable.py
+    imagediff = 'variable.png'
+    display_required = true
+    requirement = 'The system shall include a graphical scripting language that can place variable value labels on results.'
+  []
+[]
