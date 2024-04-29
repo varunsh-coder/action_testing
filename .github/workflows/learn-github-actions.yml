@@ -9,10 +9,9 @@ jobs:
       MOOSE_JOBS: 6
     steps:
       - uses: actions/checkout@v4
-      - run: scripts/diagnostics.sh
-      - run:
-          shell: make -j 32
-          working-directory: ./test
-      - run:
-          shell: ./run_tests -j 12
-          working-directory: ./test
+      - name: Build MOOSE
+        working-directory: ./test
+        run: make -j ${MOOSE_JOBS}
+      - name: Test MOOSE
+        working-directory: ./test
+        run: ./run_tests -j ${MOOSE_JOBS}
