@@ -6,7 +6,8 @@ jobs:
     if: github.repository == 'milljm/action_testing'
     runs-on: self-hosted
     env:
-      MOOSE_JOBS: 6
+      MOOSE_JOBS: 32
+      MOOSE_TEST_JOBS: 12
     steps:
       - uses: actions/checkout@v4
       - name: Build MOOSE
@@ -14,4 +15,5 @@ jobs:
         run: make -j ${MOOSE_JOBS}
       - name: Test MOOSE
         working-directory: ./test
-        run: ./run_tests -j ${MOOSE_JOBS}
+        run: ./run_tests -j ${MOOSE_TEST_JOBS}
+
