@@ -3,7 +3,6 @@ run-name: ${{ github.actor }} is learning GitHub Actions
 on: [push]
 jobs:
   precheck:
-    if: github.repository == 'milljm/action_testing'
     runs-on: self-hosted
     env:
       MOOSE_JOBS: 32
@@ -16,4 +15,3 @@ jobs:
       - name: Test MOOSE
         working-directory: ./test
         run: ./run_tests -j ${MOOSE_TEST_JOBS}
-
