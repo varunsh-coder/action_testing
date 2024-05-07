@@ -8,6 +8,9 @@ jobs:
       MOOSE_JOBS: 32
       MOOSE_TEST_JOBS: 12
     steps:
+      - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
       - uses: actions/checkout@v4
       - name: Build MOOSE
         working-directory: ./test
