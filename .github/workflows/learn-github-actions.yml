@@ -12,6 +12,7 @@ jobs:
         with:
           egress-policy: audit
       - uses: actions/checkout@v4
+      - run: ./scripts/update_and_rebuild_wasp.sh
       - name: Build MOOSE
         working-directory: ./test
         run: make -j ${MOOSE_JOBS}
